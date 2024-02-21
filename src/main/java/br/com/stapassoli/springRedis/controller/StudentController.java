@@ -1,12 +1,10 @@
 package br.com.stapassoli.springRedis.controller;
 
-import br.com.stapassoli.springRedis.entity.Student;
+import br.com.stapassoli.springRedis.entity.StudentRedis;
 import br.com.stapassoli.springRedis.service.StudentService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,18 +20,23 @@ public class StudentController {
     private final StudentService studentService;
 
     @PostMapping
-    public Student createStudent(@RequestBody Student student) {
+    public StudentRedis createStudent(@RequestBody StudentRedis student) {
         return this.studentService.saveStudent(student);
     }
 
     @GetMapping("/{id}")
-    public Student getStudent(@RequestParam(value = "id") String id) {
+    public StudentRedis getStudent(@RequestParam(value = "id") String id) {
         return this.studentService.findById(id);
     }
 
     @GetMapping
-    public List<Student> getAll() {
+    public List<StudentRedis> getAll() {
         return this.studentService.findAll();
+    }
+
+    @PostMapping("/updateDataBase")
+    public ResponseEntity<Void> updateDataBase() {
+        return this.studentService.updateDataBase();
     }
 
 }

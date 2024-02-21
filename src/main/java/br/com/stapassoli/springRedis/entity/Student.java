@@ -1,24 +1,39 @@
+
 package br.com.stapassoli.springRedis.entity;
 
+import br.com.stapassoli.springRedis.enums.Gender;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.redis.core.RedisHash;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@RedisHash("Student")
-public class Student implements Serializable {
+@Entity
+public class Student {
 
-    public enum Gender {
-        MALE, FEMALE
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private String id;
-    private String name;
+    private String studentName;
+
+    @Enumerated(EnumType.STRING)
     private Gender gender;
-    private int grade;
+
+    private Integer grade;
+
+    public Student(StudentRedis studentRedis) {
+        this.studentName = studentRedis.getName();
+        this.gender = studentRedis.getGender();
+        this.grade = studentRedis.getGrade();
+    }
 
 }
